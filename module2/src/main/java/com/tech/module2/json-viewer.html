@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom JSON Viewer</title>
+
+    <style>
+        body {
+            background-color: #121212;     /* PAGE BACKGROUND */
+            font-family: Consolas, monospace;
+            margin: 0;
+            padding: 20px;
+            color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #1e1e1e;     /* JSON BOX BG */
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #00e676;                /* JSON TEXT COLOR */
+            font-size: 17px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #90caf9;
+        }
+
+        .url-box {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            background-color: #2979ff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>🚀 Custom JSON Viewer</h2>
+
+<div class="container">
+    <input id="apiUrl" class="url-box" type="text"
+           value="http://localhost:8080/employee/1">
+
+    <button onclick="loadJSON()">Load JSON</button>
+
+    <pre id="jsonOutput">{ JSON will appear here }</pre>
+</div>
+
+<script>
+    function loadJSON() {
+        const url = document.getElementById("apiUrl").value;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("jsonOutput").textContent =
+                    JSON.stringify(data, null, 4);
+            })
+            .catch(err => {
+                document.getElementById("jsonOutput").textContent =
+                    "Error fetching JSON: " + err;
+            });
+    }
+</script>
+
+</body>
+</html>
