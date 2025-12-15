@@ -1,5 +1,6 @@
 package com.tech.module2.controller;
 
+import com.tech.module2.advices.ApiResponse;
 import com.tech.module2.dto.EmployeeDTO;
 import com.tech.module2.exceptions.ResourceNotFoundException;
 import com.tech.module2.service.EmployeeService;
@@ -45,9 +46,10 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<ApiResponse<EmployeeDTO>> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO saveEmployee = employeeService.createNewEmployee(employeeDTO);
-        return new ResponseEntity<>(saveEmployee, HttpStatus.CREATED);
+//        return new ResponseEntity<ApiResponse<EmployeeDTO>>(saveEmployee, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse<>(saveEmployee),HttpStatus.CREATED);
     }
     @PutMapping("/{empId}")
     public ResponseEntity<EmployeeDTO> updateEmployeeById(@Valid @RequestBody EmployeeDTO employeeDTO,@PathVariable Long empId){
