@@ -1,17 +1,16 @@
 package com.tech.module2.controller;
 
 import com.tech.module2.dto.EmployeeDTO;
-import com.tech.module2.entities.EmployeeEntity;
-import com.tech.module2.repository.EmployeeRepository;
+import com.tech.module2.exceptions.ResourceNotFoundException;
 import com.tech.module2.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -35,7 +34,7 @@ public class EmployeeController {
         Optional<EmployeeDTO> employeeDTO = employeeService.getEmployeeId(id);
         return employeeDTO
                 .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()-> new ResourceNotFoundException("employee not found with id " + id));
     }
     @GetMapping
     public List<EmployeeDTO> getAllEmployees(
@@ -46,12 +45,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<EmployeeDTO> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO){
         EmployeeDTO saveEmployee = employeeService.createNewEmployee(employeeDTO);
         return new ResponseEntity<>(saveEmployee, HttpStatus.CREATED);
     }
     @PutMapping("/{empId}")
-    public ResponseEntity<EmployeeDTO> updateEmployeeById(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long empId){
+    public ResponseEntity<EmployeeDTO> updateEmployeeById(@Valid @RequestBody EmployeeDTO employeeDTO,@PathVariable Long empId){
         return ResponseEntity.ok(employeeService.updateEmployeeById(employeeDTO,empId));
     }
 

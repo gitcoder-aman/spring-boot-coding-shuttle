@@ -2,6 +2,7 @@ package com.tech.module2.service;
 
 import com.tech.module2.dto.EmployeeDTO;
 import com.tech.module2.entities.EmployeeEntity;
+import com.tech.module2.exceptions.ResourceNotFoundException;
 import com.tech.module2.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 
@@ -50,8 +51,12 @@ public class EmployeeService {
         EmployeeEntity saveEmployeeEntity = employeeRepository.save(toSaveEntity);
         return modelMapper.map(saveEmployeeEntity, EmployeeDTO.class);
     }
-
+    public void isExistsByEmployeeId(Long empId) {
+        boolean exists = employeeRepository.existsById(empId);
+        if (!exists) throw new ResourceNotFoundException("Employee with id " + empId + " does not exist");
+    }
     public EmployeeDTO updateEmployeeById(EmployeeDTO employeeDTO, Long empId) {
+        isExistsByEmployeeId(empId);
         EmployeeEntity employeeEntity = this.modelMapper.map(employeeDTO, EmployeeEntity.class);
         employeeEntity.setId(empId);
         EmployeeEntity saveEmployeeEntity = employeeRepository.save(employeeEntity);
@@ -59,16 +64,13 @@ public class EmployeeService {
     }
 
     public boolean deleteEmployeeById(Long empId) {
-
-        boolean exists = employeeRepository.existsById(empId);
-        if (!exists) return false;
+        isExistsByEmployeeId(empId);
         this.employeeRepository.deleteById(empId);
         return true;
     }
 
     public EmployeeDTO updatePartialEmployeeById(Map<String, Object> updates, Long empId) {
-        boolean exists = employeeRepository.existsById(empId);
-        if (!exists) return null;
+        isExistsByEmployeeId(empId);
         EmployeeEntity employeeEntity = employeeRepository.findById(empId).orElse(null);
         updates.forEach((field, value) -> {
             Field fieldToBeUpdated = ReflectionUtils.findField(EmployeeEntity.class, field);
