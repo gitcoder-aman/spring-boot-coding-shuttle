@@ -5,6 +5,7 @@ import com.tech.hospitalmanagement.dto.CPatientInfo;
 import com.tech.hospitalmanagement.dto.IPatientInfo;
 import com.tech.hospitalmanagement.entities.Patient;
 import com.tech.hospitalmanagement.repositories.PatientRepository;
+import com.tech.hospitalmanagement.services.PatientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,9 @@ public class PatientServiceTest {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private PatientService patientService;
 
     @Test
     public void testPatient(){
@@ -35,5 +39,7 @@ public class PatientServiceTest {
 
         int rowAffected = patientRepository.updatePatientNameWithId("Anuj Sharma",1L);
         System.out.println(rowAffected);
+
+        patientService.testPatientTransaction();
     }
 }
