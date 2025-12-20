@@ -37,9 +37,14 @@ public class PatientServiceTest {
 //            System.out.println(p);
 //        }
 
-        int rowAffected = patientRepository.updatePatientNameWithId("Anuj Sharma",1L);
-        System.out.println(rowAffected);
+//        int rowAffected = patientRepository.updatePatientNameWithId("Anuj Sharma",1L);
+//        System.out.println(rowAffected);
+//
+//        patientService.testPatientTransaction();
+    }
 
-        patientService.testPatientTransaction();
+    @Test
+    public void testDeletePatientInsurance(){
+        patientService.deletePatient(1L);
     }
 }

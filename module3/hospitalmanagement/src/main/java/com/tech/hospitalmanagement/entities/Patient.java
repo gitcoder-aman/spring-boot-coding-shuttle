@@ -2,18 +2,19 @@ package com.tech.hospitalmanagement.entities;
 
 import com.tech.hospitalmanagement.entities.type.BloodGroupType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@ToString
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 
     @Id
@@ -31,4 +32,12 @@ public class Patient {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "insurance_id",unique = true)
+    private Insurance insurance; //owning side
+
+
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL) //inverse side
+    private Set<Appointment> appointments = new HashSet<>();
 }
