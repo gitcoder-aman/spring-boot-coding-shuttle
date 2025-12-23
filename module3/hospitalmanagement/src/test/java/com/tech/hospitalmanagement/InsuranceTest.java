@@ -24,6 +24,8 @@ public class InsuranceTest {
                 .build();
 
         var updatedInsurance = insuranceService.assignInsuranceToPatient(insurance,1L);
-        System.out.println(updatedInsurance);
+
+        var patient = insuranceService.removeInsuranceOfPatient(1L);
+        System.out.println(patient);
     }
 }

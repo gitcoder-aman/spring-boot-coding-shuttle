@@ -8,7 +8,6 @@ import com.tech.hospitalmanagement.repositories.DoctorRepository;
 import com.tech.hospitalmanagement.repositories.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.engine.jdbc.connections.spi.DatabaseConnectionInfo;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -15,6 +15,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Patient {
 
     @Id
@@ -33,11 +34,14 @@ public class Patient {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "insurance_id",unique = true)
     private Insurance insurance; //owning side
 
 
-    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL) //inverse side
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL,fetch = FetchType.EAGER) //inverse side
+    //if there is use fetchType.EAGER then getting unoptimize query there are n+1 Query run Hibernate so solution is
+    // write own query in PatientRepository
+//    @ToString.Exclude
     private Set<Appointment> appointments = new HashSet<>();
 }

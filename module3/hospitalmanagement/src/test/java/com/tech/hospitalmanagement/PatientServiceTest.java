@@ -41,10 +41,16 @@ public class PatientServiceTest {
 //        System.out.println(rowAffected);
 //
 //        patientService.testPatientTransaction();
+
+        //Fetch Eager and Lazy
+        List<Patient> patients = patientRepository.getAllPatientWithAppointment();
+        for (Patient p : patients){
+            System.out.println(p);
+        }
     }
 
     @Test
     public void testDeletePatientInsurance(){
-        patientService.deletePatient(1L);
+//        patientService.deletePatient(1L);
     }
 }
