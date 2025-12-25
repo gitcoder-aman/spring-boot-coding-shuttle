@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto {
+public class StudentRequestDto {
 
     private Long id;
 

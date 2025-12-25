@@ -1,6 +1,9 @@
 package com.tech.homework.CollegeManagementSystem.services;
 
-import com.tech.homework.CollegeManagementSystem.dto.StudentDto;
+import com.tech.homework.CollegeManagementSystem.dto.ProfessorSummaryDto;
+import com.tech.homework.CollegeManagementSystem.dto.StudentRequestDto;
+import com.tech.homework.CollegeManagementSystem.dto.StudentResponseDto;
+import com.tech.homework.CollegeManagementSystem.dto.SubjectSummaryDto;
 import com.tech.homework.CollegeManagementSystem.entities.Professor;
 import com.tech.homework.CollegeManagementSystem.entities.Student;
 import com.tech.homework.CollegeManagementSystem.entities.Subject;
@@ -31,48 +34,67 @@ public class StudentService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<StudentDto> getAllStudents(){
+    public List<StudentResponseDto> getAllStudents(){
 
         List<Student> students = studentRepository.findAll();
         return students
                 .stream()
-                .map(student-> modelMapper.map(student, StudentDto.class))
+                .map(student-> {
+                    StudentResponseDto dto = new StudentResponseDto();
+                    dto.setId(student.getId());
+                    dto.setName(student.getName());
+
+                    List<ProfessorSummaryDto>professorSummaryDtos = student.getProfessors()
+                            .stream()
+                            .map(professor ->
+                                new ProfessorSummaryDto(professor.getId(),professor.getTitle())
+                            ).toList();
+
+                    List<SubjectSummaryDto>subjectSummaryDtos = student.getSubjects()
+                            .stream()
+                            .map(subject ->
+                                new SubjectSummaryDto(subject.getId(),subject.getTitle())
+                            ).toList();
+                    dto.setProfessors(professorSummaryDtos);
+                    dto.setSubjects(subjectSummaryDtos);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
-    public StudentDto addStudent(StudentDto studentDto){
+    public StudentResponseDto addStudent(StudentRequestDto studentRequestDto){
 
-        Student student = modelMapper.map(studentDto,Student.class);
+        Student student = modelMapper.map(studentRequestDto,Student.class);
 
         //  Set professors
-        if (studentDto.getProfessorIds() != null && !studentDto.getProfessorIds().isEmpty()) {
+        if (studentRequestDto.getProfessorIds() != null && !studentRequestDto.getProfessorIds().isEmpty()) {
             List<Professor> professors =
-                    professorRepository.findAllById(studentDto.getProfessorIds());
+                    professorRepository.findAllById(studentRequestDto.getProfessorIds());
             student.setProfessors(professors);
         }
 
         //  Set subjects
-        if (studentDto.getSubjectIds() != null && !studentDto.getSubjectIds().isEmpty()) {
+        if (studentRequestDto.getSubjectIds() != null && !studentRequestDto.getSubjectIds().isEmpty()) {
             List<Subject> subjects =
-                    subjectRepository.findAllById(studentDto.getSubjectIds());
+                    subjectRepository.findAllById(studentRequestDto.getSubjectIds());
             student.setSubjects(subjects);
         }
         Student saveStudent = studentRepository.save(student);
-        return modelMapper.map(saveStudent,StudentDto.class);
+        return modelMapper.map(saveStudent, StudentResponseDto.class);
     }
 
-    public StudentDto updateStudentById(StudentDto studentDto,Long studentId){
+    public StudentResponseDto updateStudentById(StudentRequestDto studentRequestDto, Long studentId){
         boolean isExist = studentRepository.existsById(studentId);
         if(!isExist) {
             throw new ResourceNotFoundException("Student with " + studentId + "doesn't exists");
         }
-        Student student = modelMapper.map(studentDto,Student.class);
+        Student student = modelMapper.map(studentRequestDto,Student.class);
         student.setId(studentId);
         Student updatedEntity = studentRepository.save(student);
-        return modelMapper.map(updatedEntity, StudentDto.class);
+        return modelMapper.map(updatedEntity, StudentResponseDto.class);
     }
 
-    public StudentDto updatePartialStudentById(Map<String,Object> updates, Long studentId){
+    public StudentResponseDto updatePartialStudentById(Map<String,Object> updates, Long studentId){
         boolean isExist = studentRepository.existsById(studentId);
         if(!isExist) {
             throw new ResourceNotFoundException("Student with " + studentId + "doesn't exists");
@@ -83,7 +105,7 @@ public class StudentService {
             fieldToBeUpdated.setAccessible(true);
             ReflectionUtils.setField(fieldToBeUpdated, student, value);
         });
-        return this.modelMapper.map(studentRepository.save(Objects.requireNonNull(student)), StudentDto.class);
+        return this.modelMapper.map(studentRepository.save(Objects.requireNonNull(student)), StudentResponseDto.class);
     }
 
     public Boolean deleteStudent(Long studentId){

@@ -1,6 +1,7 @@
 package com.tech.homework.CollegeManagementSystem.controllers;
 
-import com.tech.homework.CollegeManagementSystem.dto.SubjectDto;
+import com.tech.homework.CollegeManagementSystem.dto.SubjectRequestDto;
+import com.tech.homework.CollegeManagementSystem.dto.SubjectResponseDto;
 import com.tech.homework.CollegeManagementSystem.services.SubjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,34 +21,34 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @GetMapping
-    public ResponseEntity<List<SubjectDto>> getAllStudents() {
-        List<SubjectDto> subbjectDtoList = subjectService.getAllSubjects();
+    public ResponseEntity<List<SubjectResponseDto>> getAllStudents() {
+        List<SubjectResponseDto> subbjectDtoList = subjectService.getAllSubjects();
         return new ResponseEntity<>(subbjectDtoList, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<SubjectDto> addStudent(
-            @Valid @RequestBody SubjectDto subjectDto
+    public ResponseEntity<SubjectResponseDto> addStudent(
+            @Valid @RequestBody SubjectRequestDto subjectRequestDto
     ) {
-        SubjectDto saveSubject = subjectService.addSubject(subjectDto);
+        SubjectResponseDto saveSubject = subjectService.addSubject(subjectRequestDto);
         return new ResponseEntity<>(saveSubject, HttpStatus.CREATED);
     }
 
     @PutMapping("/{subjectId}")
-    public ResponseEntity<SubjectDto> updateStudent(
-            @Valid @RequestBody SubjectDto subjectDto,
+    public ResponseEntity<SubjectResponseDto> updateStudent(
+            @Valid @RequestBody SubjectRequestDto subjectRequestDto,
             @PathVariable Long subjectId
     ) {
-        SubjectDto updatedStudent = subjectService.updateSubjectById(subjectDto, subjectId);
+        SubjectResponseDto updatedStudent = subjectService.updateSubjectById(subjectRequestDto, subjectId);
         return ResponseEntity.ok(updatedStudent);
     }
 
     @PatchMapping("/{subjectId}")
-    public ResponseEntity<SubjectDto> updatePartialFieldStudent(
+    public ResponseEntity<SubjectResponseDto> updatePartialFieldStudent(
             @RequestBody Map<String, Object> updates,
             @PathVariable Long subjectId
     ) {
-        SubjectDto updatedPartialStudent = subjectService.updatePartialSubjectById(updates,subjectId);
+        SubjectResponseDto updatedPartialStudent = subjectService.updatePartialSubjectById(updates,subjectId);
         return ResponseEntity.ok(updatedPartialStudent);
     }
 

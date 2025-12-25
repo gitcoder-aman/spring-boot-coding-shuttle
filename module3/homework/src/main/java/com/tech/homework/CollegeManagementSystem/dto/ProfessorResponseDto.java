@@ -1,8 +1,5 @@
 package com.tech.homework.CollegeManagementSystem.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tech.homework.CollegeManagementSystem.entities.Student;
-import com.tech.homework.CollegeManagementSystem.entities.Subject;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,17 +13,16 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfessorDto {
+public class ProfessorResponseDto {
 
     private Long id;
 
-    @NotBlank(message = "Professor title can't be empty")
     private String title;
 
     // OneToMany → list of Subject IDs
-    private List<Long> subjectIds = new ArrayList<>();
+    private List<SubjectSummaryDto> subjects = new ArrayList<>();
 
     // ManyToMany → list of Student IDs
-    private List<Long> studentIds = new ArrayList<>();
+    private List<StudentSummaryDto> students = new ArrayList<>();
 }
 

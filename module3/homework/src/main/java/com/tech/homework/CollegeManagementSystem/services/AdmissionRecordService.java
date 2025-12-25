@@ -1,10 +1,13 @@
 package com.tech.homework.CollegeManagementSystem.services;
 
-import com.tech.homework.CollegeManagementSystem.dto.AdmissionRecordDto;
+import com.tech.homework.CollegeManagementSystem.dto.AdmissionRecordRequestDto;
+import com.tech.homework.CollegeManagementSystem.dto.AdmissionRecordResponseDto;
 import com.tech.homework.CollegeManagementSystem.entities.AdmissionRecord;
 import com.tech.homework.CollegeManagementSystem.entities.Professor;
+import com.tech.homework.CollegeManagementSystem.entities.Student;
 import com.tech.homework.CollegeManagementSystem.exceptions.ResourceNotFoundException;
 import com.tech.homework.CollegeManagementSystem.repositories.AdmissionRecordRepository;
+import com.tech.homework.CollegeManagementSystem.repositories.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,38 +25,45 @@ import java.util.stream.Collectors;
 public class AdmissionRecordService {
 
     private final AdmissionRecordRepository admissionRecordRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<AdmissionRecordDto> getAllAdmissionRecord(){
+    public List<AdmissionRecordResponseDto> getAllAdmissionRecord(){
 
         List<AdmissionRecord> admissionRecords = admissionRecordRepository.findAll();
         return admissionRecords
                 .stream()
-                .map(admissionRecord -> modelMapper.map(admissionRecord, AdmissionRecordDto.class))
+                .map(admissionRecord -> modelMapper.map(admissionRecord, AdmissionRecordResponseDto.class))
                 .collect(Collectors.toList());
     }
 
-    public AdmissionRecordDto addAdmissionRecord(AdmissionRecordDto admissionRecordDto){
+    public AdmissionRecordResponseDto addAdmissionRecord(AdmissionRecordRequestDto admissionRecordRequestDto){
 
-        AdmissionRecord toSaveEntity = modelMapper.map(admissionRecordDto,AdmissionRecord.class);
-        AdmissionRecord admissionRecord = admissionRecordRepository.save(toSaveEntity);
-        return modelMapper.map(admissionRecord,AdmissionRecordDto.class);
+        AdmissionRecord admissionRecord = modelMapper.map(admissionRecordRequestDto,AdmissionRecord.class);
+
+        if(admissionRecordRequestDto.getStudentId() != null){
+            Student student = studentRepository.findById(admissionRecordRequestDto.getStudentId()).orElseThrow();
+            admissionRecord.setStudent(student);
+        }
+        AdmissionRecord savedAdmissionRecord = admissionRecordRepository.save(admissionRecord);
+
+        return modelMapper.map(savedAdmissionRecord, AdmissionRecordResponseDto.class);
     }
 
-    public AdmissionRecordDto updateAdmissionRecordById(AdmissionRecordDto admissionRecordDto,Long admissionRecordId){
+    public AdmissionRecordResponseDto updateAdmissionRecordById(AdmissionRecordRequestDto admissionRecordRequestDto, Long admissionRecordId){
         boolean isExist = admissionRecordRepository.existsById(admissionRecordId);
         if(!isExist) {
             throw new ResourceNotFoundException("Admission Record with " + admissionRecordId + "doesn't exists");
         }
-        AdmissionRecord admissionRecord = modelMapper.map(admissionRecordDto,AdmissionRecord.class);
+        AdmissionRecord admissionRecord = modelMapper.map(admissionRecordRequestDto,AdmissionRecord.class);
         admissionRecord.setId(admissionRecordId);
         AdmissionRecord updatedEntity = admissionRecordRepository.save(admissionRecord);
-        return modelMapper.map(updatedEntity, AdmissionRecordDto.class);
+        return modelMapper.map(updatedEntity, AdmissionRecordResponseDto.class);
     }
 
-    public AdmissionRecordDto updatePartialAdmissionRecordById(Map<String,Object> updates, Long admissionRecordId){
+    public AdmissionRecordResponseDto updatePartialAdmissionRecordById(Map<String,Object> updates, Long admissionRecordId){
         boolean isExist = admissionRecordRepository.existsById(admissionRecordId);
         if(!isExist) {
             throw new ResourceNotFoundException("AdmissionRecord with " + admissionRecordId + "doesn't exists");
@@ -64,10 +74,10 @@ public class AdmissionRecordService {
             fieldToBeUpdated.setAccessible(true);
             ReflectionUtils.setField(fieldToBeUpdated, admissionRecord, value);
         });
-        return this.modelMapper.map(admissionRecordRepository.save(Objects.requireNonNull(admissionRecord)), AdmissionRecordDto.class);
+        return this.modelMapper.map(admissionRecordRepository.save(Objects.requireNonNull(admissionRecord)), AdmissionRecordResponseDto.class);
     }
 
-    public Boolean deleteProfessor(Long admissionRecordId){
+    public Boolean deleteAdmissionRecord(Long admissionRecordId){
         boolean isExist = admissionRecordRepository.existsById(admissionRecordId);
         if(!isExist) throw new ResourceNotFoundException("AdmissionRecord with "+admissionRecordId+" doesn't exists");
         admissionRecordRepository.deleteById(admissionRecordId);

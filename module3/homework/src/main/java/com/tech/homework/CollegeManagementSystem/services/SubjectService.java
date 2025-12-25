@@ -1,10 +1,13 @@
 package com.tech.homework.CollegeManagementSystem.services;
 
-import com.tech.homework.CollegeManagementSystem.dto.StudentDto;
-import com.tech.homework.CollegeManagementSystem.dto.SubjectDto;
+import com.tech.homework.CollegeManagementSystem.dto.SubjectRequestDto;
+import com.tech.homework.CollegeManagementSystem.dto.SubjectResponseDto;
+import com.tech.homework.CollegeManagementSystem.entities.Professor;
 import com.tech.homework.CollegeManagementSystem.entities.Student;
 import com.tech.homework.CollegeManagementSystem.entities.Subject;
 import com.tech.homework.CollegeManagementSystem.exceptions.ResourceNotFoundException;
+import com.tech.homework.CollegeManagementSystem.repositories.ProfessorRepository;
+import com.tech.homework.CollegeManagementSystem.repositories.StudentRepository;
 import com.tech.homework.CollegeManagementSystem.repositories.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,38 +26,57 @@ import java.util.stream.Collectors;
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
+    private final StudentRepository studentRepository;
+    private final ProfessorRepository professorRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<SubjectDto> getAllSubjects(){
+    public List<SubjectResponseDto> getAllSubjects(){
 
         List<Subject> subjects = subjectRepository.findAll();
         return subjects
                 .stream()
-                .map(subject-> modelMapper.map(subject, SubjectDto.class))
+                .map(subject-> modelMapper.map(subject, SubjectResponseDto.class))
                 .collect(Collectors.toList());
     }
 
-    public SubjectDto addSubject(SubjectDto subjectDto){
+    public SubjectResponseDto addSubject(SubjectRequestDto subjectRequestDto){
 
-        Subject toSaveEntity = modelMapper.map(subjectDto,Subject.class);
-        Subject subject = subjectRepository.save(toSaveEntity);
-        return modelMapper.map(subject,SubjectDto.class);
+        Subject subject = modelMapper.map(subjectRequestDto,Subject.class);
+
+        if(subjectRequestDto.getProfessorId() != null){
+            Professor professor = professorRepository.findById(subjectRequestDto.getProfessorId()).orElseThrow();
+            subject.setProfessor(professor);
+        }
+
+        Subject savedSubject = subjectRepository.save(subject);
+
+
+        if(subjectRequestDto.getStudentIds() != null && !subjectRequestDto.getStudentIds().isEmpty()){
+
+            List<Student>students = studentRepository.findAllById(subjectRequestDto.getStudentIds());
+            for (Student student : students){
+                student.getSubjects().add(savedSubject);  // add owning side
+            }
+            studentRepository.saveAll(students);
+        }
+
+        return modelMapper.map(subject, SubjectResponseDto.class);
     }
 
-    public SubjectDto updateSubjectById(SubjectDto subjectDto,Long subjectId){
+    public SubjectResponseDto updateSubjectById(SubjectRequestDto subjectRequestDto, Long subjectId){
         boolean isExist = subjectRepository.existsById(subjectId);
         if(!isExist) {
             throw new ResourceNotFoundException("Subject with " + subjectId + "doesn't exists");
         }
-        Subject subject = modelMapper.map(subjectDto,Subject.class);
+        Subject subject = modelMapper.map(subjectRequestDto,Subject.class);
         subject.setId(subjectId);
         Subject updatedEntity = subjectRepository.save(subject);
-        return modelMapper.map(updatedEntity, SubjectDto.class);
+        return modelMapper.map(updatedEntity, SubjectResponseDto.class);
     }
 
-    public SubjectDto updatePartialSubjectById(Map<String,Object> updates, Long subjectId){
+    public SubjectResponseDto updatePartialSubjectById(Map<String,Object> updates, Long subjectId){
         boolean isExist = subjectRepository.existsById(subjectId);
         if(!isExist) {
             throw new ResourceNotFoundException("Subject with " + subjectId + "doesn't exists");
@@ -65,7 +87,7 @@ public class SubjectService {
             fieldToBeUpdated.setAccessible(true);
             ReflectionUtils.setField(fieldToBeUpdated, subject, value);
         });
-        return this.modelMapper.map(subjectRepository.save(Objects.requireNonNull(subject)), SubjectDto.class);
+        return this.modelMapper.map(subjectRepository.save(Objects.requireNonNull(subject)), SubjectResponseDto.class);
     }
 
     public Boolean deleteSubject(Long subjectId){

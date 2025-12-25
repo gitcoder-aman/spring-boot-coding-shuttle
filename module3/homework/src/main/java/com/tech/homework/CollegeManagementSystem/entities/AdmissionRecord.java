@@ -17,6 +17,7 @@ public class AdmissionRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "admission_id")
     private Long id;
 
     @Column(name = "admission_fee")

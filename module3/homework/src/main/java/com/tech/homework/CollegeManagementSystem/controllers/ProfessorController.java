@@ -1,6 +1,7 @@
 package com.tech.homework.CollegeManagementSystem.controllers;
 
-import com.tech.homework.CollegeManagementSystem.dto.ProfessorDto;
+import com.tech.homework.CollegeManagementSystem.dto.ProfessorRequestDto;
+import com.tech.homework.CollegeManagementSystem.dto.ProfessorResponseDto;
 import com.tech.homework.CollegeManagementSystem.services.ProfessorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,34 +22,34 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @GetMapping
-    public ResponseEntity<List<ProfessorDto>> getAllProfessor() {
-        List<ProfessorDto> professorDtoList = professorService.getAllStudents();
-        return new ResponseEntity<>(professorDtoList, HttpStatus.OK);
+    public ResponseEntity<List<ProfessorResponseDto>> getAllProfessor() {
+        List<ProfessorResponseDto> professorRequestDtoList = professorService.getAllProfessors();
+        return new ResponseEntity<>(professorRequestDtoList, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ProfessorDto> addStudent(
-            @Valid @RequestBody ProfessorDto professorDto
+    public ResponseEntity<ProfessorResponseDto> addStudent(
+            @Valid @RequestBody ProfessorRequestDto professorRequestDto
     ) {
-        ProfessorDto saveProfessor = professorService.addProfessor(professorDto);
+        ProfessorResponseDto saveProfessor = professorService.addProfessor(professorRequestDto);
         return new ResponseEntity<>(saveProfessor, HttpStatus.CREATED);
     }
 
     @PutMapping("/{professorId}")
-    public ResponseEntity<ProfessorDto> updateStudent(
-            @Valid @RequestBody ProfessorDto professorDto,
+    public ResponseEntity<ProfessorResponseDto> updateStudent(
+            @Valid @RequestBody ProfessorRequestDto professorRequestDto,
             @PathVariable Long professorId
     ) {
-        ProfessorDto updatedProfessor = professorService.updateProfessorById(professorDto, professorId);
+        ProfessorResponseDto updatedProfessor = professorService.updateProfessorById(professorRequestDto, professorId);
         return ResponseEntity.ok(updatedProfessor);
     }
 
     @PatchMapping("/{professorId}")
-    public ResponseEntity<ProfessorDto> updatePartialFieldStudent(
+    public ResponseEntity<ProfessorResponseDto> updatePartialFieldStudent(
             @RequestBody Map<String, Object> updates,
             @PathVariable Long professorId
     ) {
-        ProfessorDto updatedPartialStudent = professorService.updatePartialProfessorById(updates,professorId);
+        ProfessorResponseDto updatedPartialStudent = professorService.updatePartialProfessorById(updates,professorId);
         return ResponseEntity.ok(updatedPartialStudent);
     }
 

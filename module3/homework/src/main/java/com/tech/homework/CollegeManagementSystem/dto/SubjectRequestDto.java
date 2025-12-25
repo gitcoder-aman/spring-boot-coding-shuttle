@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectDto {
+public class SubjectRequestDto {
 
     private Long id;
 

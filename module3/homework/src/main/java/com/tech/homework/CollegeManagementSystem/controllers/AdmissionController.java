@@ -1,6 +1,7 @@
 package com.tech.homework.CollegeManagementSystem.controllers;
 
-import com.tech.homework.CollegeManagementSystem.dto.AdmissionRecordDto;
+import com.tech.homework.CollegeManagementSystem.dto.AdmissionRecordRequestDto;
+import com.tech.homework.CollegeManagementSystem.dto.AdmissionRecordResponseDto;
 import com.tech.homework.CollegeManagementSystem.services.AdmissionRecordService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,40 +22,40 @@ public class AdmissionController {
     private AdmissionRecordService admissionRecordService;
 
     @GetMapping
-    public ResponseEntity<List<AdmissionRecordDto>> getAllProfessor() {
-        List<AdmissionRecordDto> professorDtoList = admissionRecordService.getAllAdmissionRecord();
+    public ResponseEntity<List<AdmissionRecordResponseDto>> getAllProfessor() {
+        List<AdmissionRecordResponseDto> professorDtoList = admissionRecordService.getAllAdmissionRecord();
         return new ResponseEntity<>(professorDtoList, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AdmissionRecordDto> addAdmissionRecord(
-            @Valid @RequestBody AdmissionRecordDto admissionRecordDto
+    public ResponseEntity<AdmissionRecordResponseDto> addAdmissionRecord(
+            @Valid @RequestBody AdmissionRecordRequestDto admissionRecordRequestDto
     ) {
-        AdmissionRecordDto saveAdmissionRecord = admissionRecordService.addAdmissionRecord(admissionRecordDto);
+        AdmissionRecordResponseDto saveAdmissionRecord = admissionRecordService.addAdmissionRecord(admissionRecordRequestDto);
         return new ResponseEntity<>(saveAdmissionRecord, HttpStatus.CREATED);
     }
 
     @PutMapping("/{admissionRecordId}")
-    public ResponseEntity<AdmissionRecordDto> updateAdmissionRecordById(
-            @Valid @RequestBody AdmissionRecordDto admissionRecordDto,
+    public ResponseEntity<AdmissionRecordResponseDto> updateAdmissionRecordById(
+            @Valid @RequestBody AdmissionRecordRequestDto admissionRecordRequestDto,
             @PathVariable Long admissionRecordId
     ) {
-        AdmissionRecordDto updatedAdmissionRecord = admissionRecordService.updateAdmissionRecordById(admissionRecordDto, admissionRecordId);
+        AdmissionRecordResponseDto updatedAdmissionRecord = admissionRecordService.updateAdmissionRecordById(admissionRecordRequestDto, admissionRecordId);
         return ResponseEntity.ok(updatedAdmissionRecord);
     }
 
     @PatchMapping("/{admissionRecordId}")
-    public ResponseEntity<AdmissionRecordDto> updatePartialFieldAdmissionRecord(
+    public ResponseEntity<AdmissionRecordResponseDto> updatePartialFieldAdmissionRecord(
             @RequestBody Map<String, Object> updates,
             @PathVariable Long admissionRecordId
     ) {
-        AdmissionRecordDto updatedPartialAdmission = admissionRecordService.updatePartialAdmissionRecordById(updates,admissionRecordId);
+        AdmissionRecordResponseDto updatedPartialAdmission = admissionRecordService.updatePartialAdmissionRecordById(updates,admissionRecordId);
         return ResponseEntity.ok(updatedPartialAdmission);
     }
 
-    @DeleteMapping("/{professorId}")
+    @DeleteMapping("/{admissionRecordId}")
     public ResponseEntity<Boolean>deleteStudentById(@PathVariable Long professorId){
-        boolean isDeleted = admissionRecordService.deleteProfessor(professorId);
+        boolean isDeleted = admissionRecordService.deleteAdmissionRecord(professorId);
 
         if(isDeleted) return ResponseEntity.ok(true);
         else return ResponseEntity.notFound().build();
