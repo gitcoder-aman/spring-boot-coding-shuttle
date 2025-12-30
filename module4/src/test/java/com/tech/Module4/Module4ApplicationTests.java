@@ -43,7 +43,7 @@ class Module4ApplicationTests {
 	@Order(1)
 	void createNewEmployeeTest(){
 
-		EmployeeDto employeeDto = new EmployeeDto(null,"Anuj","anuj@gmail.com",25,"USER",5000.0, LocalDate.of(2020,12,1),true);
+		EmployeeDto employeeDto = new EmployeeDto(null,"Anuj","anuj@gmail.com",2,"USER",5000.0, LocalDate.of(2020,12,1),true);
 		ResponseEntity<ApiResponse<EmployeeDto>> savedEmployeeDto = employeeClient.createNewEmployee(employeeDto);
 		System.out.println(savedEmployeeDto);
 	}
