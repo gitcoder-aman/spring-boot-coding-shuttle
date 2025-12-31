@@ -8,11 +8,11 @@
 		<version>4.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.tech</groupId>
-	<artifactId>homework</artifactId>
+	<groupId>com.tech.convertCurrency</groupId>
+	<artifactId>Convert-Currency</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>homework</name>
-	<description>College Management and Library Management System</description>
+	<name>Convert-Currency</name>
+	<description>Homework of module 4 Convert Currency api Build use freecurrencyapi.com</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -44,23 +44,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.8.14</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>3.2.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>

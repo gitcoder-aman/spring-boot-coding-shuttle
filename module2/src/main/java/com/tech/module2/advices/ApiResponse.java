@@ -12,7 +12,7 @@ public class ApiResponse<T> {
     private T data;
     private ApiError error;
 
-    @JsonFormat(pattern = "hh-mm-ss dd-MM-yyyy")
+    @JsonFormat(pattern = "hh-mm-ss a dd-MM-yyyy")
     private LocalDateTime timeStamp;
 
     public ApiResponse(){
