@@ -1,8 +1,6 @@
 package com.tech.convertCurrency.Convert.Currency.client;
 
-import com.tech.convertCurrency.Convert.Currency.entities.CurrencyResponse;
-import com.tech.convertCurrency.Convert.Currency.entities.LatestRateResponse;
-import com.tech.convertCurrency.Convert.Currency.entities.StatusResponse;
+import com.tech.convertCurrency.Convert.Currency.entities.*;
 import com.tech.convertCurrency.Convert.Currency.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +9,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import tools.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,9 +45,9 @@ public class FreeCurrencyApiClient {
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
                         log.error(new String(res.getBody().readAllBytes()));
-                        throw new ResourceNotFoundException("Invalid API Key or Bad Request");
+                        throw new ResourceNotFoundException(new String(res.getBody().readAllBytes()));
                     }).onStatus(HttpStatusCode::is5xxServerError, (req, res) -> {
-                        throw new RuntimeException("FreeCurrency API server error");
+                        throw new RuntimeException(new String(res.getBody().readAllBytes()));
                     })
                     .body(new ParameterizedTypeReference<>() {
                     });
@@ -67,9 +68,9 @@ public class FreeCurrencyApiClient {
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
                         log.error(new String(res.getBody().readAllBytes()));
-                        throw new ResourceNotFoundException("Invalid API Key or Bad Request");
+                        throw new ResourceNotFoundException(new String(res.getBody().readAllBytes()));
                     }).onStatus(HttpStatusCode::is5xxServerError, (req, res) -> {
-                        throw new RuntimeException("FreeCurrency API server error");
+                        throw new RuntimeException(new String(res.getBody().readAllBytes()));
                     })
                     .body(new ParameterizedTypeReference<CurrencyResponse>() {
                     });
@@ -83,7 +84,7 @@ public class FreeCurrencyApiClient {
 
         log.info("api Client {} {}",fromCurrency,toCurrency);  //USD INR%2CEUR%2CJPY
         try {
-            LatestRateResponse body = restClient.get()
+            return restClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/v1/latest")
                             .queryParam("apikey", api_key)
@@ -92,23 +93,65 @@ public class FreeCurrencyApiClient {
                             .build())
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
-                        log.error(new String(res.getBody().readAllBytes()));
-                        throw new ResourceNotFoundException("Invalid API Key or Bad Request");
+//                        log.error(new String(res.getBody().readAllBytes()));
+//                        throw new ResourceNotFoundException(new String(res.getBody().readAllBytes(), StandardCharsets.UTF_8));
+                        String errorBody;
+                        try {
+                            errorBody = new String(res.getBody().readAllBytes(),StandardCharsets.UTF_8);
+                        } catch (IOException e) {
+                            throw new RuntimeException("Error reading response body", e);
+                        }
+
+                        log.error("FreeCurrency API error: {}", errorBody);
+
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        try {
+                            ApiErrorResponse apiError = objectMapper.readValue(errorBody, ApiErrorResponse.class);
+
+                            String message = apiError.getErrors()
+                                    .values()
+                                    .stream()
+                                    .findFirst()
+                                    .map(list -> list.get(0))
+                                    .orElse("Invalid request");
+
+                            throw new ResourceNotFoundException(message+apiError.getMessage());
+
+                        } catch (Exception e) {
+                            throw new RuntimeException("Failed to parse API error response", e);
+                        }
                     }).onStatus(HttpStatusCode::is5xxServerError, (req, res) -> {
-                        throw new RuntimeException("FreeCurrency API server error");
+                        throw new RuntimeException(new String(res.getBody().readAllBytes()));
                     })
                     .body(new ParameterizedTypeReference<LatestRateResponse>() {
                     });
-            Map<String, BigDecimal> updatedRates = new HashMap<>();
-            assert body != null;
-            body.getData().forEach((currency, value) -> {
-                BigDecimal calculateUnits = value.multiply(BigDecimal.valueOf(units));
-                updatedRates.put(currency, calculateUnits);
-            });
-            body.setData(updatedRates);
-            return body;
         }catch (Exception e){
             log.error("Exception occurred in convertCurrency",e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public HistoricalRateResponse getHistoryOfExchangeRate(String date, String baseCurrency, String currencies) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/v1/historical")
+                            .queryParam("apikey", api_key)
+                            .queryParam("base_currency", baseCurrency)
+                            .queryParam("currencies", currencies)
+                            .queryParam("date",date)
+                            .build())
+                    .retrieve()
+                    .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
+//                        log.error(new String(res.getBody().readAllBytes()));
+                        throw new ResourceNotFoundException(new String(res.getBody().readAllBytes(),StandardCharsets.UTF_8));
+                    }).onStatus(HttpStatusCode::is5xxServerError, (req, res) -> {
+                        throw new RuntimeException(new String(res.getBody().readAllBytes()));
+                    })
+                    .body(new ParameterizedTypeReference<>() {
+                    });
+        }catch (Exception e){
+            log.error("Exception occurred in HistoryOfExchangeRate",e);
             throw new RuntimeException(e);
         }
     }

@@ -2,6 +2,7 @@ package com.tech.convertCurrency.Convert.Currency.services;
 
 
 import com.tech.convertCurrency.Convert.Currency.entities.CurrencyResponse;
+import com.tech.convertCurrency.Convert.Currency.entities.HistoricalRateResponse;
 import com.tech.convertCurrency.Convert.Currency.entities.LatestRateResponse;
 import com.tech.convertCurrency.Convert.Currency.entities.StatusResponse;
 
@@ -12,4 +13,6 @@ public interface FreeCurrencyService {
     CurrencyResponse getCurrencyDetail(String currencyName);
 
     LatestRateResponse convertCurrency(String fromCurrency, String toCurrency,Integer units);
+
+    HistoricalRateResponse getHistoryOfExchangeRate(String date, String baseCurrency, String currencies);
 }
