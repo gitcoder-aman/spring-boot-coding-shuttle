@@ -2,18 +2,23 @@ package com.tech.module5.SecurityApplication.services;
 
 import com.tech.module5.SecurityApplication.dto.PostDTO;
 import com.tech.module5.SecurityApplication.entities.PostEntity;
+import com.tech.module5.SecurityApplication.entities.UserApp;
 import com.tech.module5.SecurityApplication.exceptions.ResourceNotFoundException;
 import com.tech.module5.SecurityApplication.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostServiceImpl implements PostService {
 
 
@@ -39,6 +44,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPostById(Long postId) {
+        UserApp user = (UserApp) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
+        log.info("User {}",user);
         PostEntity postEntity = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post not found with id= "+postId));
         return modelMapper.map(postEntity,PostDTO.class);
     }

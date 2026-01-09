@@ -1,15 +1,22 @@
 package com.tech.module5.SecurityApplication.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
-public class User implements UserDetails {
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class UserApp implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +26,7 @@ public class User implements UserDetails {
     private String email;
 
     private String password;
+    private String name;
 
 
     @Override
