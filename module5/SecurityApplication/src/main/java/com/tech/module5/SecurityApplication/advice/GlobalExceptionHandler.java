@@ -1,10 +1,15 @@
 package com.tech.module5.SecurityApplication.advice;
 
 import com.tech.module5.SecurityApplication.exceptions.ResourceNotFoundException;
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.naming.AuthenticationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -14,4 +19,16 @@ public class GlobalExceptionHandler {
         ApiError apiError = new ApiError(exception.getLocalizedMessage(), HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(apiError,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiError>handleBadCredentialsException(BadCredentialsException badCredentialsException){
+        ApiError apiError = new ApiError(badCredentialsException.getLocalizedMessage(),HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ApiError>handleJwtException(JwtException jwtException){
+        ApiError apiError = new ApiError(jwtException.getLocalizedMessage(),HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+
 }
