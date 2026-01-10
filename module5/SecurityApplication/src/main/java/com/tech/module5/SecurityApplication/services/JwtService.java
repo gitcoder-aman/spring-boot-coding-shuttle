@@ -21,13 +21,21 @@ public class JwtService {
     private SecretKey getSecretKey(){
         return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
-    public String generateToken(UserApp userApp){
+    public String generateAccessToken(UserApp userApp){
         return Jwts.builder()
                 .setSubject(userApp.getId().toString())
                 .claim("email", userApp.getEmail())
                 .claim("roles", Set.of("ADMIN","USER"))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*10))
+                .signWith(getSecretKey())
+                .compact();
+    }
+    public String generateRefreshToken(UserApp userApp){
+        return Jwts.builder()
+                .setSubject(userApp.getId().toString())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis()+1000L*60*60*24*30*6))
                 .signWith(getSecretKey())
                 .compact();
     }
