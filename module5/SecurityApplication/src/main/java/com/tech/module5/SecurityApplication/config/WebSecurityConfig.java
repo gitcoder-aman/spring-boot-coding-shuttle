@@ -1,5 +1,6 @@
 package com.tech.module5.SecurityApplication.config;
 
+import com.tech.module5.SecurityApplication.entities.enums.Role;
 import com.tech.module5.SecurityApplication.filters.JwtAuthFilter;
 import com.tech.module5.SecurityApplication.handler.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -30,28 +32,18 @@ public class WebSecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
-    @Bean
-    @Order(1)
-    SecurityFilterChain oauth2SecurityChain(HttpSecurity http) throws Exception {
-
-        http
-                .securityMatcher("/oauth2/**", "/login/**")
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .oauth2Login(oauth2Config->oauth2Config
-                        .failureUrl("/login?error=true")
-                        .successHandler(oAuth2SuccessHandler))
-                .csrf(csrf -> csrf.disable());
-
-        return http.build();
-    }
+    private static final String[] publicRoutes = {
+            "/error","/auth/**","/home.html"
+    };
 
     @Bean
-    @Order(2)
     SecurityFilterChain apiSecurityChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts","/error","/auth/**").permitAll()
+                        .requestMatchers(publicRoutes).permitAll()
+                        .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyRole(Role.ADMIN.name(),Role.CREATOR.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

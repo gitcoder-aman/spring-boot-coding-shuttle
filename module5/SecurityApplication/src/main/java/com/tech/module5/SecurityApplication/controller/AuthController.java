@@ -25,9 +25,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Value("${deploy.env}")
-    private String deployEnv;
-
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signUp(@RequestBody SignUpDto signUpDto) {
         UserDto userDto = userService.signup(signUpDto);
@@ -44,7 +41,7 @@ public class AuthController {
 
         Cookie cookie = new Cookie("refreshToken", loginResponseDto.getRefreshToken());
         cookie.setHttpOnly(true);
-        cookie.setSecure("production".equals(deployEnv));
+        cookie.setSecure(true);
         response.addCookie(cookie);
 
         return ResponseEntity.ok(loginResponseDto);
