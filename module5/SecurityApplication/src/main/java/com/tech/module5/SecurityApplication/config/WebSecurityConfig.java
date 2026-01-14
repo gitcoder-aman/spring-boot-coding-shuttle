@@ -1,5 +1,6 @@
 package com.tech.module5.SecurityApplication.config;
 
+import com.tech.module5.SecurityApplication.entities.enums.Permission;
 import com.tech.module5.SecurityApplication.entities.enums.Role;
 import com.tech.module5.SecurityApplication.filters.JwtAuthFilter;
 import com.tech.module5.SecurityApplication.handler.OAuth2SuccessHandler;
@@ -24,6 +25,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.tech.module5.SecurityApplication.entities.enums.Permission.*;
+
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
@@ -43,7 +46,16 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(publicRoutes).permitAll()
                         .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyRole(Role.ADMIN.name(),Role.CREATOR.name())
+                        .requestMatchers(HttpMethod.POST,"/posts/**")
+                        .hasAnyRole(Role.ADMIN.name(),Role.CREATOR.name())
+                        .requestMatchers(HttpMethod.POST,"/posts/**")
+                        .hasAnyAuthority(POST_CREATE.name())
+                        .requestMatchers(HttpMethod.GET,"/posts/**")
+                        .hasAuthority(POST_VIEW.name())
+                        .requestMatchers(HttpMethod.PUT,"/posts/**")
+                        .hasAuthority(POST_UPDATE.name())
+                        .requestMatchers(HttpMethod.DELETE,"/posts/**")
+                        .hasAuthority(POST_DELETE.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

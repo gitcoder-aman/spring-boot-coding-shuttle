@@ -1,5 +1,6 @@
 package com.tech.module5.SecurityApplication.dto;
 
+import com.tech.module5.SecurityApplication.entities.enums.Permission;
 import com.tech.module5.SecurityApplication.entities.enums.Role;
 import lombok.Data;
 
@@ -11,4 +12,5 @@ public class UserDto {
     private String name;
     private String email;
     private Set<Role> roles;
+    private Set<Permission>permissions;
 }
