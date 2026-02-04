@@ -33,14 +33,16 @@ public class AuthService {
         return new LoginResponseDto(user.getId(),accessToken,refreshToken);
     }
 
-    public LoginResponseDto refreshToken(String refreshToken) {
+    public LoginResponseDto refreshToken(String oldRefreshToken) {
 
-        Long userId = jwtService.getUserIdFromToken(refreshToken);
-        sessionService.validateSession(refreshToken);
+        Long userId = jwtService.getUserIdFromToken(oldRefreshToken);
+        sessionService.validateSession(oldRefreshToken);
         UserApp user = userService.getUserById(userId);
 
         String accessToken = jwtService.generateAccessToken(user);
-        return new LoginResponseDto(user.getId(),accessToken,refreshToken);
+        String newRefreshToken = jwtService.generateRefreshToken(user);
+        sessionService.rotateSession(user,oldRefreshToken,newRefreshToken);
+        return new LoginResponseDto(user.getId(),accessToken,newRefreshToken);
     }
 
     public void logout(String refreshToken) {

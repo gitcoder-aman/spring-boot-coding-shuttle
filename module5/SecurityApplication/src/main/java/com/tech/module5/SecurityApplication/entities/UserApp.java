@@ -37,9 +37,13 @@ public class UserApp implements UserDetails {
     private String password;
     private String name;
 
+    private Integer sessionLimitCount;
+
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
 
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    @Enumerated(EnumType.STRING)

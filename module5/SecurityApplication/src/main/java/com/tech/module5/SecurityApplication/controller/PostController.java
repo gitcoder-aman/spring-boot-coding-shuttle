@@ -3,6 +3,8 @@ package com.tech.module5.SecurityApplication.controller;
 import com.tech.module5.SecurityApplication.dto.PostDTO;
 import com.tech.module5.SecurityApplication.services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
+    @Secured({"ROLE_USER","ROLE_ADMIN"})
     public List<PostDTO> getPosts(){
         return postService.getAllPost();
     }
@@ -24,12 +27,14 @@ public class PostController {
         return postService.createNewPost(inputPost);
     }
 
-    @PutMapping("{postId}")
+    @PutMapping("/{postId}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN') OR hasAuthority('POST_VIEW')")
     public PostDTO updatedPost(@RequestBody PostDTO inputPost,@PathVariable Long postId){
         return postService.updatePost(inputPost,postId);
     }
 
-    @GetMapping("{postId}")
+    @GetMapping("/{postId}")
+    @PreAuthorize("@postSecurity.isOwnerOfPost(#postId)")
     public PostDTO getPostById(@PathVariable Long postId){
         return postService.getPostById(postId);
     }

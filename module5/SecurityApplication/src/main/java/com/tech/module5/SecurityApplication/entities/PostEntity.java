@@ -1,10 +1,7 @@
 package com.tech.module5.SecurityApplication.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "posts")
@@ -12,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class PostEntity{
 
     @Id
@@ -22,6 +20,9 @@ public class PostEntity{
 
 //    @NotAudited
     private String description;
+
+    @ManyToOne
+    private UserApp author;
 
     @PrePersist
     void beforeSave(){

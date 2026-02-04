@@ -1,27 +1,19 @@
 package com.tech.module5.SecurityApplication.config;
 
-import com.tech.module5.SecurityApplication.entities.enums.Permission;
 import com.tech.module5.SecurityApplication.entities.enums.Role;
 import com.tech.module5.SecurityApplication.filters.JwtAuthFilter;
 import com.tech.module5.SecurityApplication.handler.OAuth2SuccessHandler;
+import com.tech.module5.SecurityApplication.handler.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -30,10 +22,12 @@ import static com.tech.module5.SecurityApplication.entities.enums.Permission.*;
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     private static final String[] publicRoutes = {
             "/error","/auth/**","/home.html"
@@ -50,8 +44,6 @@ public class WebSecurityConfig {
                         .hasAnyRole(Role.ADMIN.name(),Role.CREATOR.name())
                         .requestMatchers(HttpMethod.POST,"/posts/**")
                         .hasAnyAuthority(POST_CREATE.name())
-                        .requestMatchers(HttpMethod.GET,"/posts/**")
-                        .hasAuthority(POST_VIEW.name())
                         .requestMatchers(HttpMethod.PUT,"/posts/**")
                         .hasAuthority(POST_UPDATE.name())
                         .requestMatchers(HttpMethod.DELETE,"/posts/**")
@@ -61,6 +53,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .exceptionHandling(ex->ex.accessDeniedHandler(customAccessDeniedHandler))
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -13,4 +13,5 @@ public class SignUpDto {
     private String name;
     private Set<Role> roles;
     private Set<Permission>permissions;
+    private Integer sessionLimitCount;
 }

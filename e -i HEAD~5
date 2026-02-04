@@ -1,0 +1,185 @@
+[33mcommit 520288ba17e218871eab75fe2d4d5990c52cc4f8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Jan 12 00:01:35 2026 +0530
+
+    oAuth signin not done yet some getting problem with google client id
+
+[33mcommit d1e85844182c78e2094fb12d5fa2bb1dfd2f9c1f[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Jan 12 00:00:19 2026 +0530
+
+    oAuth signin not done yet some getting problem with google client id
+
+[33mcommit 11b05f89dc2faecb6dde79c743de8409490b3660[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Sat Jan 10 10:59:10 2026 +0530
+
+    JWT- Refresh Token and access Token based Authentication
+
+[33mcommit 8e6aa8172d87659ff727f7bad171bf88b43f70ac[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Sat Jan 10 09:49:53 2026 +0530
+
+    done module 5
+
+[33mcommit 407eef4c10c517a54262dff90fccaca65fcbe976[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Fri Jan 9 12:36:56 2026 +0530
+
+    Signup and login using Jwt,Authentication request using Jwt
+
+[33mcommit ff99da534ddd9b91f2a0c828f6bbb82d1aefb595[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Tue Jan 6 23:33:18 2026 +0530
+
+    internal working of spring boot & Spring security web config ,SecurityFilter chain
+
+[33mcommit 4c25b0515538a3e8b884c6258609a3f6941fe008[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Tue Jan 6 12:32:45 2026 +0530
+
+    some setup for spring security
+
+[33mcommit 63d4101df682a01aaf1056e2835c3431e2223b95[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Jan 1 22:55:04 2026 +0530
+
+    done convert Currency features like convertorCurrency,history,status,currencyDetail
+
+[33mcommit 39bd8f15bee2bc07cab27001cdb1e526ffd264d6[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Jan 1 18:52:21 2026 +0530
+
+    Convertor Currency status,detail,convertCurrency end points builds
+
+[33mcommit a60530af42a3da178e16277c82ba52b72a709ba3[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Jan 1 00:34:31 2026 +0530
+
+    initial commit for creating currency convertor api which is homework
+
+[33mcommit 0958cb28bbbe552912cdfd29bf21ef07bd357c50[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Wed Dec 31 23:48:19 2025 +0530
+
+    Spring boot actuator explore
+
+[33mcommit a8c67511c00c10a9d6f0089b372fac989fec65fa[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Tue Dec 30 14:01:10 2025 +0530
+
+    learn Logging in Spring boot
+
+[33mcommit 5216d2152c0453bc0cbe10676e820deafe96efa6[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Tue Dec 30 12:29:43 2025 +0530
+
+    Making third party Api calls with RestClient
+
+[33mcommit 05597448e1bfca6c80e5ff913fa02f4f477fe750[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Dec 29 19:32:58 2025 +0530
+
+    learn how works Auditing in Spring boot
+
+[33mcommit 42fbe43dea0c6d281aba3f62e39df0975c4a168c[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Dec 25 23:00:06 2025 +0530
+
+    learn production ready spring boot features and devtools
+
+[33mcommit 5c69fc84a63cfc5f52dc0b0b33959811ebe38ffe[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Dec 25 20:58:05 2025 +0530
+
+    College management done homework
+
+[33mcommit 36bcd944201e2ee8d4cc4ffad7880263ddd5928d[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Wed Dec 24 23:31:13 2025 +0530
+
+    make college management system
+
+[33mcommit 93b84e045e4b9dbe0bf3c4b18aa63104d2e71cae[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Tue Dec 23 23:53:27 2025 +0530
+
+    learn about cascading,orphan and FetchType,Query Optimization
+
+[33mcommit 137d55059e726bfb66717e6c5f42d38df18d69e3[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Sun Dec 21 00:15:40 2025 +0530
+
+    learn mapping cardinality,cascading type and transcational
+
+[33mcommit 3e2d2d1ff6ee10f5ebdc8f94b425a7d383fa9992[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Fri Dec 19 22:50:15 2025 +0530
+
+    Hibernate Entity Lifecycle work with spring boot
+
+[33mcommit 548f0544b289fe8e457ca5c32700b324fa896172[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Dec 18 21:01:17 2025 +0530
+
+    file folder changes
+
+[33mcommit d3afdca89102f09bb0c058e7f6962477efd5ea25[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Dec 18 20:58:06 2025 +0530
+
+    learn about projection in spring boot
+
+[33mcommit 83731862bd97054ae135a43963d4f9e411a8eada[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Thu Dec 18 16:19:42 2025 +0530
+
+    Spring JPA,Sorting and Pagination
+
+[33mcommit 1422ce1b730ffcf4c147afec313aeebe56ca5896[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Dec 15 22:09:31 2025 +0530
+
+    initial commit
+
+[33mcommit cca38b63e64bd231f823c492c52c87400704002f[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Dec 15 21:51:00 2025 +0530
+
+    learn stream and lambda in java
+
+[33mcommit 687f65cec28ed3427d6f5545f035b7ab8aadf817[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Dec 15 16:24:14 2025 +0530
+
+    Transforming Api Response
+
+[33mcommit 549c9c1b88c7f236953057d73d65ec670f076291[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Dec 15 14:17:30 2025 +0530
+
+    Exception Handling in spring boot
+
+[33mcommit 774bdbd2c1d3d46a8472af8ffe0e8c447eafe015[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Tue Dec 9 01:44:39 2025 +0530
+
+    Layer and Mapping done
+
+[33mcommit 5160a61b06533f675f4f59bcfff7f23c390e0355[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Sat Dec 6 22:39:24 2025 +0530
+
+    Initial Commit
+
+[33mcommit 9a03105eaba66c7e0f4162849f4580b997eb120f[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Nov 24 12:51:02 2025 +0530
+
+    Bean , Dependency Injection,Spring Boot vs spring framework,
+
+[33mcommit d963d5796aaaa74c50f2c46022102ffb17c48c57[m
+Author: Aman Kumar <amankumar93578@gmail.com>
+Date:   Mon Nov 24 11:36:37 2025 +0530
+
+    first commit of module 1
