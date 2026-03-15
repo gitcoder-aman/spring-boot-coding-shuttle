@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: learn-spring-ai
+
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: llama3.2:3b
+#    openai:
+#      api-key: gfdgdfsgfdshhjhjjhhghghghgffkkjjjnnnkjj-jjhjhjhhjjj-kjknnunnuuyyoom
+#      chat:
+#        options:
+#          model: gpt-4o-mini
+#          temperature: 0.9
+
+logging:
+  level:
+    org.springframework.ai:
+      chat.client: DEBUG
