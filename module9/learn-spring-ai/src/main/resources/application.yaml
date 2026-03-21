@@ -8,6 +8,21 @@ spring:
       chat:
         options:
           model: llama3.2:3b
+      embedding:
+        options:
+          model: nomic-embed-text
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        enabled: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5431/postgres
+    username: postgres
+    password: mysecretpassword
+    driver-class-name: org.postgresql.Driver
+
+
 #    openai:
 #      api-key: gfdgdfsgfdshhjhjjhhghghghgffkkjjjnnnkjj-jjhjhjhhjjj-kjknnunnuuyyoom
 #      chat:

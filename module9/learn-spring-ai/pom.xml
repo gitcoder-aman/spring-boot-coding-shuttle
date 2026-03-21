@@ -40,6 +40,36 @@
 			<artifactId>spring-ai-starter-model-ollama</artifactId>
 		</dependency>
 
+<!--		-Duser.timezone=Asia/Kolkata     also add this in vm option-->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-pdf-document-reader</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+			<!-- Testcontainers -->
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>1.19.8</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>1.19.8</version>
+				<scope>test</scope>
+			</dependency>
+
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.ai</groupId>-->
 <!--			<artifactId>spring-ai-starter-model-openai</artifactId>-->
