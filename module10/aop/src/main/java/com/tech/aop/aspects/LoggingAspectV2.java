@@ -17,7 +17,7 @@ public class LoggingAspectV2 {
     }
 
 //    @After("allServiceMethodsPointCut()")
-//    @AfterReturning(value = "allServiceMethodsPointCut()", returning = "returnedObj")
+    @AfterReturning(value = "allServiceMethodsPointCut()", returning = "returnedObj")
     public void afterServiceMethodCalls(JoinPoint joinPoint, Object returnedObj) {
         log.info("After returning advice method call, {}", joinPoint.getSignature());
         log.info("After returning returned value, {}", returnedObj);
@@ -39,7 +39,7 @@ public class LoggingAspectV2 {
         return returnedValue;
     }
 
-    @Pointcut("execution(* com.codingshuttle.aopApp.services.impl.*.*(..))")
+    @Pointcut("execution(* com.tech.aop.services.impl.*.*(..))")
     public void allServiceMethodsPointCut() {
     }
 

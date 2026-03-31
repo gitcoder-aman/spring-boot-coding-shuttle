@@ -27,11 +27,14 @@ public class LoggingAspect {
     }
 
     @Before("within(com.tech.aop..*)")
+//    @Before("within(com.tech.aop.services.impl.*)")
     public void beforeServiceImplCalls() {
         log.info("Service Impl calls");
     }
 
     @Before("myLoggingAndAopMethodsPointCut()")
+//    @Before("@annotation(com.tech.aop.aspects.MyLogging) && within(com.tech.aop..*)")
+//    @Before("@annotation(org.springframework.transaction.annotation.Transactional)")  //target any annotational part
     public void beforeTransactionalAnnotationCalls() {
         log.info("Before My Logging Annotation calls");
     }

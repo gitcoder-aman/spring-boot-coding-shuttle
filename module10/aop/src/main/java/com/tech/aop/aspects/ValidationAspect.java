@@ -19,7 +19,7 @@ public class ValidationAspect {
 
     @Around("allServiceMethodsPointCut()")
     public Object validateOrderId(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        Object args[] = proceedingJoinPoint.getArgs();
+        Object[] args = proceedingJoinPoint.getArgs();
 
         Long orderId = (Long)args[0];
 
