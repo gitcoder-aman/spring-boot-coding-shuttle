@@ -1,6 +1,6 @@
 package com.tech.aop.services.impl;
 
-import com.tech.aop.aspects.MyLogging;
+import com.tech.aop.annotation.MyLogging;
 import com.tech.aop.services.ShipmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

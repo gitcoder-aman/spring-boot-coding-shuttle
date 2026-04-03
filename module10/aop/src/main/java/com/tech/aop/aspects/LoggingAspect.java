@@ -33,14 +33,14 @@ public class LoggingAspect {
     }
 
     @Before("myLoggingAndAopMethodsPointCut()")
-//    @Before("@annotation(com.tech.aop.aspects.MyLogging) && within(com.tech.aop..*)")
+//    @Before("@annotation(com.tech.aop.annotation.MyLogging) && within(com.tech.aop..*)")
 //    @Before("@annotation(org.springframework.transaction.annotation.Transactional)")  //target any annotational part
     public void beforeTransactionalAnnotationCalls() {
         log.info("Before My Logging Annotation calls");
     }
 
 
-    @Pointcut("@annotation(com.tech.aop.aspects.MyLogging) && within(com.tech.aop..*)")
+    @Pointcut("@annotation(com.tech.aop.annotation.MyLogging) && within(com.tech.aop..*)")
     public void myLoggingAndAopMethodsPointCut() {
     }
 
