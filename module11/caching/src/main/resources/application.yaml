@@ -1,3 +1,18 @@
 spring:
   application:
     name: caching
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Module4
+    username: postgres
+    password: 3092
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # create | update | validate | none
+    show-sql: true       # show SQL queries in console
+    properties:
+      hibernate:
+        format_sql: true       # format SQL nicely
+        dialect: org.hibernate.dialect.PostgreSQLDialect
