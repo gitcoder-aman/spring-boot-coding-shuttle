@@ -1,6 +1,8 @@
 package com.tech.caching.advice;
 
 import com.tech.caching.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -48,6 +51,11 @@ public class GlobalExceptionHandler {
                 .subErrors(errors)
                 .build();
         return buildErrorResponseEntity(apiError);
+    }
+    @ExceptionHandler(StaleObjectStateException.class)
+    public ResponseEntity<?>handleStaleObjectStateException(StaleObjectStateException ex){
+        log.error(ex.getLocalizedMessage());
+        return new ResponseEntity<>("Stale data",HttpStatus.CONFLICT);
     }
 
     private ResponseEntity<ApiResponse<?>> buildErrorResponseEntity(ApiError apiError) {
