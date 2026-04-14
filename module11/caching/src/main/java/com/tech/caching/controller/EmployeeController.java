@@ -2,8 +2,11 @@ package com.tech.caching.controller;
 
 import com.tech.caching.advice.ApiResponse;
 import com.tech.caching.dto.EmployeeDTO;
+import com.tech.caching.entity.SalaryAccount;
 import com.tech.caching.service.EmployeeService;
+import com.tech.caching.service.SalaryAccountService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +16,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
+@RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final SalaryAccountService salaryAccountService;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
 
     @GetMapping("/{empId}")
     public ResponseEntity<EmployeeDTO> getEmployeeId(@PathVariable(name = "empId") Long id) {
@@ -68,4 +70,10 @@ public class EmployeeController {
 //
 //        return ResponseEntity.ok(employeeDTO);
 //    }
+
+    @PutMapping("/incrementBalance/{accountId}")
+    public ResponseEntity<SalaryAccount>incrementBalance(@PathVariable Long accountId){
+        SalaryAccount salaryAccount = salaryAccountService.incrementBalance(accountId);
+        return ResponseEntity.ok(salaryAccount);
+    }
 }

@@ -2,8 +2,11 @@ package com.tech.caching.service;
 
 import com.tech.caching.dto.EmployeeDTO;
 import com.tech.caching.entity.Employee;
+import com.tech.caching.entity.SalaryAccount;
 import com.tech.caching.exception.ResourceNotFoundException;
 import com.tech.caching.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -17,17 +20,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
     private final String CACHE_NAME="employees";
-
-    public EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
-        this.employeeRepository = employeeRepository;
-        this.modelMapper = modelMapper;
-    }
-
+    private final SalaryAccountService salaryAccountService;
 
     @Cacheable(cacheNames = CACHE_NAME,key = "#id")
     public EmployeeDTO getEmployeeId(Long id) {
@@ -46,10 +45,14 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @CachePut(cacheNames = CACHE_NAME,key = "#result.id")
     public EmployeeDTO createNewEmployee(EmployeeDTO employeeDTO) {
         Employee toSaveEntity = this.modelMapper.map(employeeDTO, Employee.class);
         Employee saveEmployeeEntity = employeeRepository.save(toSaveEntity);
+
+        salaryAccountService.createAccount(saveEmployeeEntity);
+
         return modelMapper.map(saveEmployeeEntity, EmployeeDTO.class);
     }
     public void isExistsByEmployeeId(Long empId) {
