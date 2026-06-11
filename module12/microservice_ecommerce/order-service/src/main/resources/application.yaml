@@ -23,7 +23,7 @@ spring:
 server:
   port: 9011
   servlet:
-    context-path: /api/v1
+    context-path: /orders
 
 #eureka server config
 eureka:
