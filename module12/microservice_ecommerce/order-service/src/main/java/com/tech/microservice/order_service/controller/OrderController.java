@@ -1,15 +1,14 @@
 package com.tech.microservice.order_service.controller;
 
+import com.tech.microservice.order_service.client.InventoryOpenFeignClient;
 import com.tech.microservice.order_service.dto.OrderRequestDto;
 import com.tech.microservice.order_service.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.smartcardio.ResponseAPDU;
 import java.util.List;
 
 @RequestMapping("/core")
@@ -24,6 +23,12 @@ public class OrderController {
     @GetMapping("/helloOrder")
     public String helloOrder(){
         return "Hello from Order Service";
+    }
+
+    @PostMapping("/create-order")
+    public ResponseEntity<OrderRequestDto>createOrder(@RequestBody OrderRequestDto orderRequestDto){
+        OrderRequestDto orderRequestDto1 = orderService.createOrder(orderRequestDto);
+        return ResponseEntity.ok(orderRequestDto1);
     }
     @GetMapping
     public ResponseEntity<List<OrderRequestDto>>getAllOrders(){

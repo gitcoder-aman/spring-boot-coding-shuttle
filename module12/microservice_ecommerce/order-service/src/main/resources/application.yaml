@@ -15,10 +15,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
 
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:data.sql
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath:data.sql
 
 server:
   port: 9011
@@ -30,3 +30,17 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+resilience4j:
+  retry:    # koi service down/fail hai to wait karega 5sec ke liye and automatic attempt lega 3 sec ke acoording par
+    instances:
+      inventoryRetry:
+        max-attempts: 3
+        wait-duration: 5s
+
+  ratelimiter:     # set api hit limit for some time
+    instances:
+      inventoryRateLimiter:
+        limitRefreshPeriod: 5s   # Har 1 second baad 100 permits refill ho jayenge
+        limitForPeriod: 3   #3 requests allowed
+        timeoutDuration: 1s  #Agar permit available nahi hai to request 1 sec tak wait karegi.

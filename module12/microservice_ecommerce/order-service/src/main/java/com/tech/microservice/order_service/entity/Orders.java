@@ -19,7 +19,7 @@ public class Orders {
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
 
-    private Double price;
+    private Double totalPrice;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<OrderItem>items;
