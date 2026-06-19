@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ChatService {
     String chat(String query);
+    String chatTemplate();
 }
