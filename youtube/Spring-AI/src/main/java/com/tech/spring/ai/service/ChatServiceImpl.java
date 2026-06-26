@@ -1,15 +1,11 @@
 package com.tech.spring.ai.service;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class ChatServiceImpl implements ChatService{
@@ -90,7 +86,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public String chatTemplate(){
+    public String chatTemplate(String q){
 
 //        PromptTemplate strTemplate = PromptTemplate.builder().template("What is {techName}? tell me example of {techExample}?").build();
 //
@@ -113,15 +109,16 @@ public class ChatServiceImpl implements ChatService{
 //        ));
 //        Prompt prompt = new Prompt(systemMessage,userMessage);
 
-        return this.ollamaChatClient
+        return this.googleGenAiChatClient
                 .prompt()
+//                .advisors(new SimpleLoggerAdvisor())
                 .system(system->
                         system.text(this.systemMessage))
                 .user(user->
 //                        user.text("What is {techName}? tell me also about {techExample}")
 //                                .param("techExample","Spring Controller example")
 //                                .param("techName","Collection framework in java"))
-                        user.text(this.userMessage).param("concept","Spring Framework validation"))
+                        user.text(this.userMessage).param("concept",q))
                 .call()
                 .content();
     }

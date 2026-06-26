@@ -18,7 +18,7 @@ public class ChatController {
     public ResponseEntity<String>chat(
             @RequestParam(value = "q",required = true) String q
     ){
-        String resultResponse = chatService.chat(q);
+        String resultResponse = chatService.chatTemplate(q);
         return ResponseEntity.ok(resultResponse);
     }
 }

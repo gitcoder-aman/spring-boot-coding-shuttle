@@ -18,7 +18,7 @@ class SpringAiApplicationTests {
 	@Test
 	void testTemplateRender(){
 		System.out.println("Template Renderer:");
-		var output = this.chatService.chatTemplate();
+		var output = this.chatService.chatTemplate("q");
 		System.out.println(output);
 	}
 

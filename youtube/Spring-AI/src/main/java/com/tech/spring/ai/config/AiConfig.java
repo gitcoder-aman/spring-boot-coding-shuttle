@@ -4,23 +4,31 @@ package com.tech.spring.ai.config;
 //import org.springframework.ai.google.genai.GoogleGenAiChatModel;
 //import org.springframework.ai.ollama.OllamaChatModel;
 //import org.springframework.context.annotation.Bean;
+
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.google.genai.GoogleGenAiChatModel;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaChatOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class AiConfig {
 
     @Bean(name = "genAiChatClient")
-    public ChatClient genAiChatModel(GoogleGenAiChatModel googleGenAiChatModel){
-        return ChatClient.builder(googleGenAiChatModel).build();
+    public ChatClient genAiChatModel(GoogleGenAiChatModel googleGenAiChatModel) {
+        return ChatClient.builder(googleGenAiChatModel)
+                .defaultAdvisors(new SimpleLoggerAdvisor(), new SafeGuardAdvisor(List.of("games")))
+                .build();
     }
+
     @Bean(name = "ollamaChatClient")
-    public ChatClient ollamaChatModel(OllamaChatModel ollamaChatModel){
-        return ChatClient.builder(ollamaChatModel).build();
+    public ChatClient ollamaChatModel(OllamaChatModel ollamaChatModel) {
+        return ChatClient.builder(ollamaChatModel).defaultAdvisors(new SimpleLoggerAdvisor()).build();
     }
 
 //    @Bean
