@@ -1,3 +1,21 @@
 spring:
   application:
     name: notification-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kafka_db
+    username: postgres
+    password: 3092
+    driver-class-name: org.postgresql.Driver
+
+  config:
+    import: classpath:kafka.yaml
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
+
+server:
+  port: 9051
