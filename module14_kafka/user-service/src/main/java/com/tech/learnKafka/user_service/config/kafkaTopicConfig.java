@@ -15,6 +15,6 @@ public class kafkaTopicConfig {
 
     @Bean
     public NewTopic userRandomTopic(){
-        return new NewTopic("KAFKA_RANDOM_USER_TOPIC",3,(short)1);
+        return new NewTopic(KAFKA_RANDOM_USER_TOPIC,3,(short)1);
     }
 }
