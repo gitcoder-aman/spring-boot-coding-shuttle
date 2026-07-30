@@ -1,3 +1,20 @@
 spring:
   application:
     name: product-service
+
+  datasource:
+    # "product-db" is the Docker Compose service name,
+    # NOT localhost.
+    url: jdbc:postgresql://product-db:5432/product_db  # they are inside the container running if we use this outside database then we use 5433 port
+    username: postgres
+    password: 3092
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true

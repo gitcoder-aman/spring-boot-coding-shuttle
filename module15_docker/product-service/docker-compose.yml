@@ -1,0 +1,59 @@
+# Compose file version (optional in Docker Compose V2)
+version: "3.9"
+
+services:
+
+  # PostgreSQL Database Service
+  product-db:
+    image: postgres:17                # Official PostgreSQL image from Docker Hub
+    container_name: product-db-container   # Custom name of the running container
+
+    ports:
+      - "5433:5432"                   # Host Port : Container Port
+
+    environment:                      # Environment variables used while creating the PostgreSQL container
+      POSTGRES_USER: postgres         # Database username
+      POSTGRES_PASSWORD: 3092         # Database password
+      POSTGRES_DB: product_db         # Database created automatically when the container starts
+
+    volumes:
+      # Persist database data outside the container.
+      # If the container is deleted, the database data remains safe in this volume.
+      - product-db-data:/var/lib/postgresql/data
+
+    networks:
+      # Connect this container to the custom Docker network
+      - product-network
+
+
+  # Spring Boot Application Service
+  product-service:
+    image: aman06383/product-service:latest   # Pull your Spring Boot image from Docker Hub
+    container_name: product-service-container # Custom container name
+
+    ports:
+      - "8080:8080"                           # Host Port : Container Port
+
+    networks:
+      # Both containers are connected to the same network,
+      # so they can communicate using service names.
+      - product-network
+
+    depends_on:
+      # Start the database container before starting the Spring Boot container.
+      # Note: It controls only the startup order, NOT database readiness.
+      - product-db
+
+
+# Named Docker Volume
+volumes:
+  product-db-data:
+  # Stores PostgreSQL data permanently.
+  # Data remains even if the PostgreSQL container is removed.
+
+
+# Custom Docker Network
+networks:
+  product-network:
+  # Allows product-service and product-db containers
+  # to communicate with each other using service names.
