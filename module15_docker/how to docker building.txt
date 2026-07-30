@@ -1,0 +1,17 @@
+Docker Lec-3
+----how to docker building docker image using docker file and maven plugin.---
+1) docker file create in own project
+2) docker build -t product-service:v0.0.1 .
+3) docker run product-service:v0.0.1 (now it is running on docker but we are not exposing port, so didn't get in browser)
+4) docker run -p 8080:8080 product-service:v0.0.1 (now port is exposing on 8080 and now running on browser)
+
+---------now work with maven plugin so don't required of docker file.--------
+!important-> if you are working with maven plugin then java version and project java version should be same.
+1)./mvnw clean install spring-boot:build-image
+2) docker run -p 8080:8080 product-service:0.0.1-SNAPSHOT
+
+---------now we want to push docker image on docker hub------
+docker login
+docker tag product-service:0.0.1-SNAPSHOT aman06383/product-service
+docker push aman06383/product-service
+

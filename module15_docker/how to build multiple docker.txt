@@ -1,0 +1,13 @@
+Lec-15.4 
+--------Managing Multiple docker containers using docker compose-----
+first make docker-compose.yml then make a docker file
+# Copy Maven Wrapper Configuration
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+COPY src ./src
+CMD ["./mvnw","spring-boot:run"] after added these commmand in docker file then run cmd->
+docker build -t aman06383/product-service .
+docker compose up ->  yah command Yehi Docker Compose ki sabse badi power hai—poori multi-container application ko ek hi command se create aur start kar dena.
+docker compose down -> Containers aur network remove karta hai, lekin volumes ko default me preserve karta hai.
+
