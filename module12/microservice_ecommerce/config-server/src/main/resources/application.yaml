@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Anuj-Kumar-Sharma/ecommerce-config-server
+          username: anuj-kumar-sharma
+          password: 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
+          default-label: master
+server:
+  port: 8888
