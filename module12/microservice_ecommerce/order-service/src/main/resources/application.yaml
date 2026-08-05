@@ -1,9 +1,9 @@
 spring:
   application:
     name: order-service
-  config:
-    import:
-      - configserver:http://config-server:8888
+#  config:
+#    import:
+#      - configserver:http://config-server:8888
 
   datasource:
     url: jdbc:postgresql://localhost:5433/order_db

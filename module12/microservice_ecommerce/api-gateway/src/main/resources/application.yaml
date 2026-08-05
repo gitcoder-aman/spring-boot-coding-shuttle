@@ -1,13 +1,13 @@
 spring:
   application:
     name: api-gateway
-  config:
-    import:
-      - configserver:http://config-server:8888
+#  config:
+#    import:
+#      - configserver:http://config-server:8888
   cloud:
     gateway:
       server:
-        webmvc:
+        webflux:
           routes:
             - id: order-service
               uri: lb://ORDER-SERVICE
@@ -15,6 +15,7 @@ spring:
                 - Path=/api/v1/orders/**
               filters:
                 - StripPrefix=2   # it is not allowed /api/v1 in order service or any services where another api calling
+                - name: LoggingOrdersFilter
             - id: inventory-service
               uri: lb://INVENTORY-SERVICE
               predicates:
@@ -22,7 +23,7 @@ spring:
               filters:
                 - StripPrefix=2
                 - AddRequestHeader=X-Custom-Header, Aman
-#                - RedirectTo=302,https://youtube.com   when we have to hit inventory then redirect to youtube website
+          #         - RedirectTo=302,https://youtube.com   when we have to hit inventory then redirect to youtube website
 
 
 server:
