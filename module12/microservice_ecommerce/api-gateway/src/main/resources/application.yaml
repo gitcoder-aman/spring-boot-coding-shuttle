@@ -16,6 +16,13 @@ spring:
               filters:
                 - StripPrefix=2   # it is not allowed /api/v1 in order service or any services where another api calling
                 - name: LoggingOrdersFilter
+                - name: Authentication
+                  args:
+                    isEnabled: true
+                - name: Authorization
+                  args:
+                    allowedRoles: ADMIN,SUPER_ADMIN
+                    isEnabled: true
             - id: inventory-service
               uri: lb://INVENTORY-SERVICE
               predicates:
@@ -23,7 +30,9 @@ spring:
               filters:
                 - StripPrefix=2
                 - AddRequestHeader=X-Custom-Header, Aman
+                - name: Authentication
           #         - RedirectTo=302,https://youtube.com   when we have to hit inventory then redirect to youtube website
+
 
 
 server:
@@ -36,3 +45,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+jwt:
+  secretKey: "${JWT_SECRET_KEY}"
