@@ -6,9 +6,14 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/Anuj-Kumar-Sharma/ecommerce-config-server
-          username: anuj-kumar-sharma
-          password: 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
-          default-label: master
+          uri: https://github.com/gitcoder-aman/ecommerce-config-server
+          username: gitcoder-aman
+          password: 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
+          default-label: main
 server:
   port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

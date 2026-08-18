@@ -19,8 +19,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
         <module name="orders-service" />
-        <module name="order-service" />
         <module name="inventory-service" />
+        <module name="order-service" />
       </profile>
     </annotationProcessing>
   </component>

@@ -1,73 +1,73 @@
 spring:
   application:
     name: order-service
-#  config:
-#    import:
-#      - configserver:http://config-server:8888
+  config:
+    import:
+      - configserver:http://localhost:8888
 
-  datasource:
-    url: jdbc:postgresql://localhost:5433/order_db
-    username: postgres
-    password: 3092
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
-
-#  sql:
-#    init:
-#      mode: always
-#      data-locations: classpath:data.sql
-
-server:
-  port: 9011
-  servlet:
-    context-path: /orders
-
-#eureka server config
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-resilience4j:
-  retry:    # koi service down/fail hai to wait karega 5sec ke liye and automatic attempt lega 3 sec ke acoording par
-    instances:
-      inventoryRetry:
-        max-attempts: 3
-        wait-duration: 5s
-
-  ratelimiter:     # set api hit limit for some time
-    instances:
-      inventoryRateLimiter:
-        limitRefreshPeriod: 5s   # Har 1 second baad 100 permits refill ho jayenge
-        limitForPeriod: 3   #3 requests allowed
-        timeoutDuration: 1s  #Agar permit available nahi hai to request 1 sec tak wait karegi.
-
-  circuitbreaker:
-    instances:
-      inventoryCircuitBreaker:
-        registerHealthIndicator: true  #Expose circuit breaker health via the actuator
-        slidingWindowSize: 10 #Size of the sliding window for call recording
-        slidingWindowType: COUNT_BASED #Use count based slide window
-        minimumNumberOfCalls: 10 #Minimum number of calls before calculating failure rate
-        failureRateThreshold: 50 #If 50% (5 out of 10) calls fail, the circuit goes to OPEN state
-        waitDurationInOpenState: 20s #Time the Circuit stay OPEN before moving to HALF_OPEN
-        permittedNumberOfCallsInHalfOpenState: 3 #Number of Test calls in HALF_OPEN state
-        eventConsumerBufferSize: 10 #Buffer size for event log
-
-management:
-  health:
-    circuitbreaker:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+#  datasource:
+#    url: jdbc:postgresql://localhost:5433/order_db
+#    username: postgres
+#    password: 3092
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    defer-datasource-initialization: true
+#
+##  sql:
+##    init:
+##      mode: always
+##      data-locations: classpath:data.sql
+#
+#server:
+#  port: 9011
+#  servlet:
+#    context-path: /orders
+#
+##eureka server config
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+#
+#resilience4j:
+#  retry:    # koi service down/fail hai to wait karega 5sec ke liye and automatic attempt lega 3 sec ke acoording par
+#    instances:
+#      inventoryRetry:
+#        max-attempts: 3
+#        wait-duration: 5s
+#
+#  ratelimiter:     # set api hit limit for some time
+#    instances:
+#      inventoryRateLimiter:
+#        limitRefreshPeriod: 5s   # Har 1 second baad 100 permits refill ho jayenge
+#        limitForPeriod: 3   #3 requests allowed
+#        timeoutDuration: 1s  #Agar permit available nahi hai to request 1 sec tak wait karegi.
+#
+#  circuitbreaker:
+#    instances:
+#      inventoryCircuitBreaker:
+#        registerHealthIndicator: true  #Expose circuit breaker health via the actuator
+#        slidingWindowSize: 10 #Size of the sliding window for call recording
+#        slidingWindowType: COUNT_BASED #Use count based slide window
+#        minimumNumberOfCalls: 10 #Minimum number of calls before calculating failure rate
+#        failureRateThreshold: 50 #If 50% (5 out of 10) calls fail, the circuit goes to OPEN state
+#        waitDurationInOpenState: 20s #Time the Circuit stay OPEN before moving to HALF_OPEN
+#        permittedNumberOfCallsInHalfOpenState: 3 #Number of Test calls in HALF_OPEN state
+#        eventConsumerBufferSize: 10 #Buffer size for event log
+#
+#management:
+#  health:
+#    circuitbreaker:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: always

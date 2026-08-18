@@ -5,6 +5,7 @@ import com.tech.microservice.order_service.dto.OrderRequestDto;
 import com.tech.microservice.order_service.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,13 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    @Value("${my.properties}")
+    private String myProperties;
+
 
     @GetMapping("/helloOrder")
     public String helloOrder(@RequestHeader("X-User-Id") Long userId){
-        return "Hello from Order Service, user id is"+userId;
+        return "Hello from Order Service, user id is"+userId+myProperties;
     }
 
     @PostMapping("/create-order")
